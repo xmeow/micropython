@@ -69,7 +69,7 @@ class TelnetToSerial:
                 self.tn.write(bytes(password, 'ascii') + b"\r\n")
 
                 if b'for more information.' in self.tn.read_until(b'Type "help()" for more information.', timeout=read_timeout):
-                    # login succesful
+                    # login successful
                     from collections import deque
                     self.fifo = deque()
                     return
@@ -267,7 +267,7 @@ class Pyboard:
         if not data.endswith(b'raw REPL; CTRL-B to exit\r\n>'):
             print(data)
             raise PyboardError('could not enter raw repl')
-
+        """
         self.serial.write(b'\x04') # ctrl-D: soft reset
         data = self.read_until(1, b'soft reboot\r\n')
         if not data.endswith(b'soft reboot\r\n'):
@@ -279,6 +279,7 @@ class Pyboard:
         if not data.endswith(b'raw REPL; CTRL-B to exit\r\n'):
             print(data)
             raise PyboardError('could not enter raw repl')
+            """
 
     def exit_raw_repl(self):
         self.serial.write(b'\r\x02') # ctrl-B: enter friendly REPL
@@ -306,9 +307,9 @@ class Pyboard:
             command_bytes = bytes(command, encoding='utf8')
 
         # check we have a prompt
-        data = self.read_until(1, b'>')
-        if not data.endswith(b'>'):
-            raise PyboardError('could not enter raw repl')
+        # data = self.read_until(1, b'>')
+        # if not data.endswith(b'>'):
+        #    raise PyboardError('could not enter raw repl')
 
         # write command
         for i in range(0, len(command_bytes), 256):
